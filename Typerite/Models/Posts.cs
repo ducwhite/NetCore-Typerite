@@ -26,5 +26,24 @@ namespace Typerite.Models
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Categories Categories { get; set; }
+
+        public string TitleTrimmed
+        {
+            get
+            {
+                if (Title.Length > 10) { return Title.Substring(0, 10) + " ..."; }
+                else { return Title; }
+
+            }
+        }
+        public string DescriptionTrimmed
+        {
+            get
+            {
+                if (Description.Length > 10) { return Description.Substring(0, 10) + " ..."; }
+                else { return Description; }
+
+            }
+        }
     }
 }
