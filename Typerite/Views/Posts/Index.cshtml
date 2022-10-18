@@ -16,7 +16,7 @@
             <article class="masonry__brick entry format-standard animate-this">
 
                 <div class="entry__thumb">
-                    <a href="single-standard.html" class="entry__thumb-link">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="entry__thumb-link">
                         <img src="@Html.DisplayFor(modelItem => item.Background)"
                              srcset="@Html.DisplayFor(modelItem => item.Background) 1x, @Html.DisplayFor(modelItem => item.Background) 2x" alt="">
                     </a>
@@ -25,11 +25,11 @@
                 <div class="entry__text">
                     <div class="entry__header">
 
-                        <h2 class="entry__title"><a href="single-standard.html">@Html.DisplayFor(modelItem => item.Title).</a></h2>
+                        <h2 class="entry__title"><a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title).</a></h2>
                         <div class="entry__meta">
                             <span class="entry__meta-cat">
                                 <a href="category.html">@Html.DisplayFor(modelItem => item.Categories.Category)</a>
-                                
+
 
                             </span>
                             <span class="entry__meta-date">

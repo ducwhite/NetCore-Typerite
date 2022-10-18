@@ -19,5 +19,15 @@ namespace Typerite.Models
         [Required]
         public string Message { get; set; }
 
+        public string MessageTrimmed
+        {
+            get
+            {
+                if (Message.Length > 20) { return Message.Substring(0, 20) + " ..."; }
+                else { return Message; }
+
+            }
+        }
+
     }
 }
