@@ -7,38 +7,51 @@
 
 @*<h1>Index</h1>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Created)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Background)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Authors)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Categories)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ingredient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Background)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Authors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categories)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ingredient)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
@@ -61,9 +74,9 @@
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
-    }
-        </tbody>
-    </table>*@
+        }
+    </tbody>
+</table>*@
 
 
 
@@ -101,10 +114,17 @@
                             <thead>
                                 <tr>
                                     <th>@Html.DisplayNameFor(model => model.Title)</th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Ingredient)
+                                    </th>
                                     <th> @Html.DisplayNameFor(model => model.Description)</th>
+                                    <th> @Html.DisplayNameFor(model => model.Authors)</th>
                                     <th> @Html.DisplayNameFor(model => model.Created)</th>
                                     <th> @Html.DisplayNameFor(model => model.Background)</th>
-                                    <th> @Html.DisplayNameFor(model => model.Authors)</th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Image)
+                                    </th>
+
                                     <th> @Html.DisplayNameFor(model => model.Categories)</th>
                                     <th>Action</th>
                                 </tr>
@@ -117,18 +137,25 @@
                                         @Html.DisplayFor(modelItem => item.TitleTrimmed)
                                     </td>
                                     <td>
+                                        @Html.DisplayFor(modelItem => item.IngredientTrimmed)
+                                    </td>
+                                    <td>
                                         @Html.DisplayFor(modelItem => item.DescriptionTrimmed)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Authors.FullName)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Created)
                                     </td>
                                     <td>
                                         <img src="@Html.DisplayFor(modelItem => item.Background)" alt="Alternate Text" />
-                                        
+
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Authors.FullName)
+                                        <img src="@Html.DisplayFor(modelItem => item.Image)" alt="Alternate Text" />
                                     </td>
+
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Categories.Category)
                                     </td>

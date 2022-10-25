@@ -60,7 +60,7 @@ namespace Typerite.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Created,Background,AuthorId,CategoryId")] Posts posts)
+        public async Task<IActionResult> Create([Bind("Id,Title,Ingredient,Image,Description,Created,Background,AuthorId,CategoryId")] Posts posts)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace Typerite.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Created,Background,AuthorId,CategoryId")] Posts posts)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Ingredient,Image,Description,Created,Background,AuthorId,CategoryId")] Posts posts)
         {
             if (id != posts.Id)
             {

@@ -20,10 +20,21 @@ namespace Typerite.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchPharse, int pageNumber=1)
         {
+            //var applicationDbContext = _context.Posts.Include(p => p.Authors).Include(p => p.Categories);
+            //return View(await applicationDbContext.ToListAsync());
             var applicationDbContext = _context.Posts.Include(p => p.Authors).Include(p => p.Categories);
-            return View(await applicationDbContext.ToListAsync());
+            if (searchPharse == null)
+            {
+                return View(await PaginatedList<Posts>.CreateAsync(applicationDbContext, pageNumber, 3));
+            }
+            else
+            {
+                return View(await PaginatedList<Posts>.CreateAsync(applicationDbContext.Where(p => p.Title.Contains(searchPharse)), pageNumber, 3));
+   
+            }
+            
         }
 
         // GET: Posts/Details/5
@@ -157,6 +168,12 @@ namespace Typerite.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        //public async Task<IActionResult> Search(string searchPharse)
+        //{
+        //    var applicationDbContext = _context.Posts.Include(p => p.Authors).Include(p => p.Categories);
+        //    return View("Index", await applicationDbContext.Where(p => p.Title.Contains(searchPharse)).ToListAsync());
+        //}
 
         private bool PostsExists(int id)
         {

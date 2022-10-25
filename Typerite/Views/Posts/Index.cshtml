@@ -1,9 +1,10 @@
-﻿@model IEnumerable<Typerite.Models.Posts>
+﻿@model PaginatedList<Typerite.Models.Posts>
 
 @{
     ViewData["Title"] = "Typerity - Posts";
     Layout = "~/Views/Shared/_Typerity.cshtml";
 }
+
 <div class="masonry-wrap">
 
     <div class="masonry">
@@ -25,7 +26,7 @@
                 <div class="entry__text">
                     <div class="entry__header">
 
-                        <h2 class="entry__title"><a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title).</a></h2>
+                        <h2 class="entry__title"><a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.TitleTrimmedUser).</a></h2>
                         <div class="entry__meta">
                             <span class="entry__meta-cat">
                                 <a href="category.html">@Html.DisplayFor(modelItem => item.Categories.Category)</a>
@@ -33,14 +34,14 @@
 
                             </span>
                             <span class="entry__meta-date">
-                                <a href="single-standard.html">@Html.DisplayFor(modelItem => item.Created)</a>
+                                <a href="single-standard.html">@Html.DisplayFor(modelItem => item.CreatedShort)</a>
                             </span>
                         </div>
 
                     </div>
                     <div class="entry__excerpt">
                         <p>
-                            @Html.DisplayFor(modelItem => item.Description)
+                            @Html.DisplayFor(modelItem => item.DescriptionTrimmedUser)
                         </p>
                     </div>
                 </div>
@@ -54,19 +55,37 @@
 
 </div> <!-- end masonry-wrap -->
 
+@{ 
+    var prevDisabled = !Model.PreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.NextPage ? "disabled" : "";
+}
+
 <div class="row">
     <div class="column large-full">
         <nav class="pgn">
             <ul>
-                <li><a class="pgn__prev" href="#0">Prev</a></li>
-                <li><a class="pgn__num" href="#0">1</a></li>
-                <li><span class="pgn__num current">2</span></li>
-                <li><a class="pgn__num" href="#0">3</a></li>
-                <li><a class="pgn__num" href="#0">4</a></li>
-                <li><a class="pgn__num" href="#0">5</a></li>
-                <li><span class="pgn__num dots">…</span></li>
-                <li><a class="pgn__num" href="#0">8</a></li>
-                <li><a class="pgn__next" href="#0">Next</a></li>
+                @*<li><a class="pgn__prev" href="#0">Prev</a></li>*@
+                <li>
+                    <a asp-action="Index"
+                       asp-route-pageNumber="@(Model.PageIndex > 1 ? Model.PageIndex - 1 : Model.PageIndex)
+                       " class="pgn__num @prevDisabled">
+                        Previous
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index"
+                       asp-route-pageNumber="@(Model.PageIndex < (Model.Count) * 3 ? Model.PageIndex + 1 : Model.PageIndex) 
+                       " class="pgn__num @nextDisabled">
+                        Next
+                    </a>
+                </li>
+                @*<li><span class="pgn__num current">Next</span></li>
+        <li><a class="pgn__num" href="#0">3</a></li>
+        <li><a class="pgn__num" href="#0">4</a></li>
+        <li><a class="pgn__num" href="#0">5</a></li>
+        <li><span class="pgn__num dots">…</span></li>
+        <li><a class="pgn__num" href="#0">8</a></li>
+        <li><a class="pgn__next" href="#0">Next</a></li>*@
             </ul>
         </nav>
     </div>

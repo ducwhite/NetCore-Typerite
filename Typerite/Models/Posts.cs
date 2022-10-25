@@ -14,9 +14,13 @@ namespace Typerite.Models
         [MinLength(10)]
         public string Title { get; set; }
         [Required]
+        public string Ingredient { get; set; }
+        [Display(Name = "Image")]
+        public string Image { get; set; }
+        [Required]
         public string Description { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
-        [Display(Name = "Image")]
+        [Display(Name = "Background")]
         public string Background { get; set; }
         [Display(Name = "Author")]
         public int AuthorId { get; set; }
@@ -36,6 +40,46 @@ namespace Typerite.Models
 
             }
         }
+
+        public string TitleTrimmedUser
+        {
+            get
+            {
+                if (Title.Length > 50) { return Title.Substring(0, 50) + " ..."; }
+                else { return Title; }
+
+            }
+        }
+        public string DescriptionTrimmedUser
+        {
+            get
+            {
+                if (Description.Length > 265) { return Description.Substring(0, 265) + " ..."; }
+                else { return Description; }
+
+            }
+        }
+
+        public string IngredientTrimmed
+        {
+            get
+            {
+                if (Ingredient.Length > 10) { return Ingredient.Substring(0, 10) + " ..."; }
+                else { return Ingredient; }
+
+            }
+        }
+
+       
+        public string CreatedShort
+        {
+            get
+            {
+                return Created.ToShortDateString();
+
+            }
+        }
+
         public string DescriptionTrimmed
         {
             get
