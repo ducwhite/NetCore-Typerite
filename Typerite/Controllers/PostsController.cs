@@ -20,11 +20,22 @@ namespace Typerite.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index(string searchPharse, int pageNumber=1)
+        public async Task<IActionResult> Index(int id, string searchPharse, int pageNumber=1)
         {
             //var applicationDbContext = _context.Posts.Include(p => p.Authors).Include(p => p.Categories);
             //return View(await applicationDbContext.ToListAsync());
+            var id2 = id > 0 ? id : -1;
+            var cat = _context.Categories.ToList();
+            ViewBag.ListByCat = cat;
+            //var applicationDbContext = _context.Posts.Include(p => p.Authors).Include(p => p.Categories); 
             var applicationDbContext = _context.Posts.Include(p => p.Authors).Include(p => p.Categories);
+
+            if (id2 != -1)
+            {
+                return View(await PaginatedList<Posts>.CreateAsync(applicationDbContext.Where(p => p.CategoryId == id2), pageNumber, 3));
+
+            }
+
             if (searchPharse == null)
             {
                 return View(await PaginatedList<Posts>.CreateAsync(applicationDbContext, pageNumber, 3));
@@ -53,6 +64,15 @@ namespace Typerite.Controllers
             {
                 return NotFound();
             }
+
+            List<Posts> List3 = new List<Posts>();
+            foreach (var item in _context.Posts.OrderByDescending(u => u.Id).Take(3))
+            {
+                List3.Add(item);
+            }
+
+            ViewBag.Last3 = List3;
+            ViewBag.Category = _context.Categories.ToList();
 
             return View(posts);
         }

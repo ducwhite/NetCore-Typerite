@@ -5,54 +5,8 @@
     Layout = "~/Views/Shared/_Typerity.cshtml";
 }
 
-@*<h1>Details</h1>
-
-<div>
-    <h4>Posts</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Background)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Background)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Authors)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Authors.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categories)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categories.Category)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>*@
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v15.0&appId=852489799081863&autoLogAppEvents=1" nonce="abL1ma26"></script>
 
 <main class="row content__page">
 
@@ -82,6 +36,15 @@
 
         <div class="entry__content">
 
+            <h2>Nguyên liệu</h2>
+
+            <p>
+                @Html.DisplayFor(model => model.Ingredient)
+            </p>
+
+
+            <h2>Cách làm</h2>
+
             <p class="lead drop-cap">
                 @Html.DisplayFor(model => model.Description)
             </p>
@@ -96,74 +59,52 @@
                      sizes="(max-width: 2000px) 100vw, 2000px" alt="">
             </p>
 
-            <h2>Nguyên liệu</h2>
 
-            <p>
-                @Html.DisplayFor(model => model.Ingredient)
-            </p>
 
             <blockquote>
                 <p>
-                    Chúc bạn có một bữa ăn ngon miệng.
+                    Chúc bạn nấu món ăn thành công và có một bữa ăn ngon miệng!
                 </p>
                 <cite>@Html.DisplayFor(model => model.Authors.FullName)</cite>
             </blockquote>
 
+            <!-- end entry related -->
 
-            <p class="entry__tags">
-                <span>Post Tags</span>
 
-                <span class="entry__tag-list">
-                    <a href="#0">orci</a>
-                    <a href="#0">lectus</a>
-                    <a href="#0">varius</a>
-                    <a href="#0">turpis</a>
-                </span>
-
-            </p>
         </div> <!-- end entry content -->
-
-
         <div class="entry__related">
-            <h3 class="h2">Related Articles</h3>
+            <h3 class="h2">Món đề xuất</h3>
 
             <ul class="related">
-                <li class="related__item">
-                    <a href="single-standard.html" class="related__link">
-                        <img src="~images/thumbs/masonry/walk-600.jpg" alt="">
-                    </a>
-                    <h5 class="related__post-title">Using Repetition and Patterns in Photography.</h5>
-                </li>
-                <li class="related__item">
-                    <a href="single-standard.html" class="related__link">
-                        <img src="~images/thumbs/masonry/dew-600.jpg" alt="">
-                    </a>
-                    <h5 class="related__post-title">Health Benefits Of Morning Dew.</h5>
-                </li>
-                <li class="related__item">
-                    <a href="single-standard.html" class="related__link">
-                        <img src="~images/thumbs/masonry/rucksack-600.jpg" alt="">
-                    </a>
-                    <h5 class="related__post-title">The Art Of Visual Storytelling.</h5>
-                </li>
+                @foreach (var item in ViewBag.Last3)
+                {
+
+                    <li class="related__item">
+                        <a href="single-standard.html" class="related__link">
+                            <img src="@item.Background" alt="">
+                        </a>
+                        <h5 class="related__post-title">@item.Title</h5>
+                    </li>
+                }
             </ul>
-        </div> <!-- end entry related -->
+        </div>
+
+
+
+
 
     </article> <!-- end column large-full entry-->
-
-
+    <!-- end comments-wrap -->
     <div class="comments-wrap">
 
         <div id="comments" class="column large-12">
 
-            <h3 class="h2">Field of comment Field of comment Field of comment Field of comment </h3>
-
+            <h3 class="h2">Bình luận </h3>
+            <div class="fb-comments" data-href="https://localhost:44348/" data-width="800" data-numposts="5"></div>
             <!-- START commentlist -->
             <!-- END commentlist -->
 
         </div> <!-- end comments -->
 
-
-
-    </div> <!-- end comments-wrap -->
+    </div>
 </main>

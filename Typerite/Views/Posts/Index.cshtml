@@ -6,7 +6,7 @@
 }
 
 <div class="masonry-wrap">
-
+    
     <div class="masonry">
 
         <div class="grid-sizer"></div>
@@ -52,10 +52,23 @@
 
 
     </div> <!-- end masonry -->
+    <div class="entry__content">
+        <p class="entry__tags">
+            <span>Post Categories</span>
+            @foreach (var item in ViewBag.ListByCat)
+            {
+                <span class="entry__tag-list">
+                    
+                    @Html.ActionLink((string)item.Category, "Index", "Posts", new { id = item.Id })
+                </span>
+            }
+
+        </p>
+    </div>
 
 </div> <!-- end masonry-wrap -->
 
-@{ 
+@{
     var prevDisabled = !Model.PreviousPage ? "disabled" : "";
     var nextDisabled = !Model.NextPage ? "disabled" : "";
 }
@@ -74,18 +87,18 @@
                 </li>
                 <li>
                     <a asp-action="Index"
-                       asp-route-pageNumber="@(Model.PageIndex < (Model.Count) * 3 ? Model.PageIndex + 1 : Model.PageIndex) 
+                       asp-route-pageNumber="@(Model.PageIndex < (Model.Count) * 3 ? Model.PageIndex + 1 : Model.PageIndex)
                        " class="pgn__num @nextDisabled">
                         Next
                     </a>
                 </li>
                 @*<li><span class="pgn__num current">Next</span></li>
-        <li><a class="pgn__num" href="#0">3</a></li>
-        <li><a class="pgn__num" href="#0">4</a></li>
-        <li><a class="pgn__num" href="#0">5</a></li>
-        <li><span class="pgn__num dots">…</span></li>
-        <li><a class="pgn__num" href="#0">8</a></li>
-        <li><a class="pgn__next" href="#0">Next</a></li>*@
+                    <li><a class="pgn__num" href="#0">3</a></li>
+                    <li><a class="pgn__num" href="#0">4</a></li>
+                    <li><a class="pgn__num" href="#0">5</a></li>
+                    <li><span class="pgn__num dots">…</span></li>
+                    <li><a class="pgn__num" href="#0">8</a></li>
+                    <li><a class="pgn__next" href="#0">Next</a></li>*@
             </ul>
         </nav>
     </div>
