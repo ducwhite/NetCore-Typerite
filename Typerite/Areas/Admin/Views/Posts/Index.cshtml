@@ -120,10 +120,7 @@
                                     <th> @Html.DisplayNameFor(model => model.Description)</th>
                                     <th> @Html.DisplayNameFor(model => model.Authors)</th>
                                     <th> @Html.DisplayNameFor(model => model.Created)</th>
-                                    <th> @Html.DisplayNameFor(model => model.Background)</th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Image)
-                                    </th>
+              
 
                                     <th> @Html.DisplayNameFor(model => model.Categories)</th>
                                     <th>Action</th>
@@ -148,13 +145,7 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Created)
                                     </td>
-                                    <td>
-                                        <img src="@Html.DisplayFor(modelItem => item.Background)" alt="Alternate Text" />
 
-                                    </td>
-                                    <td>
-                                        <img src="@Html.DisplayFor(modelItem => item.Image)" alt="Alternate Text" />
-                                    </td>
 
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Categories.Category)
