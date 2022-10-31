@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Typerite.Data;
+using Typerite.Extensions;
 using Typerite.Models;
 
 namespace Typerite.Areas.Admin.Controllers
@@ -23,116 +24,101 @@ namespace Typerite.Areas.Admin.Controllers
         // GET: Admin/Contacts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Contacts.ToListAsync());
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    return View(await _context.Contacts.ToListAsync());
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            
         }
 
         // GET: Admin/Contacts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
-            }
-
-            var contacts = await _context.Contacts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contacts == null)
-            {
-                return NotFound();
-            }
-
-            return View(contacts);
-        }
-
-        // GET: Admin/Contacts/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Admin/Contacts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,Email,Message")] Contacts contacts)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(contacts);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(contacts);
-        }
-
-        // GET: Admin/Contacts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contacts = await _context.Contacts.FindAsync(id);
-            if (contacts == null)
-            {
-                return NotFound();
-            }
-            return View(contacts);
-        }
-
-        // POST: Admin/Contacts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Email,Message")] Contacts contacts)
-        {
-            if (id != contacts.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
                 {
-                    _context.Update(contacts);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContactsExists(contacts.Id))
+                    if (id == null)
                     {
                         return NotFound();
                     }
-                    else
+
+                    var contacts = await _context.Contacts
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (contacts == null)
                     {
-                        throw;
+                        return NotFound();
                     }
+
+                    return View(contacts);
                 }
-                return RedirectToAction(nameof(Index));
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
             }
-            return View(contacts);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            
         }
+
 
         // GET: Admin/Contacts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var contacts = await _context.Contacts
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (contacts == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(contacts);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
             }
 
-            var contacts = await _context.Contacts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contacts == null)
-            {
-                return NotFound();
-            }
-
-            return View(contacts);
+            
         }
 
         // POST: Admin/Contacts/Delete/5
@@ -140,10 +126,29 @@ namespace Typerite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contacts = await _context.Contacts.FindAsync(id);
-            _context.Contacts.Remove(contacts);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    var contacts = await _context.Contacts.FindAsync(id);
+                    _context.Contacts.Remove(contacts);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            
         }
 
         private bool ContactsExists(int id)

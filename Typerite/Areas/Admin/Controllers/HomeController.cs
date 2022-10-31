@@ -30,26 +30,26 @@ namespace Typerite.Controllers
             ViewBag.TotalAuthor = _context.Authors.Count();
             ViewBag.TotalContact = _context.Contacts.Count();
 
-            //if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
-            //{
-            //    var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
-            //    if (login.Count() > 0)
-            //    {
-            //        return View(login);
-            //    }
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    return View();
+                }
 
-            //    else
-            //    {
-            //        return RedirectToAction("Index", "Login");
-            //    }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
 
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Index", "Login");
-            //}
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
-            return View();
+            //return View();
         }
 
         public IActionResult Privacy()

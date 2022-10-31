@@ -35,8 +35,14 @@ namespace Typerite.Models
         {
             get
             {
-                if (Title.Length > 10) { return Title.Substring(0, 10) + " ..."; }
+                if (Title != null)
+                {
+                    if (Title.Length > 10) { return Title.Substring(0, 10) + " ..."; }
+                    else { return Title; }
+                }
+
                 else { return Title; }
+
 
             }
         }
@@ -45,8 +51,15 @@ namespace Typerite.Models
         {
             get
             {
-                if (Title.Length > 50) { return Title.Substring(0, 50) + " ..."; }
+                if (Title != null)
+                {
+                    if (Title.Length > 50) { return Title.Substring(0, 50) + " ..."; }
+                    else { return Title; }
+                }
+
                 else { return Title; }
+
+
 
             }
         }
@@ -54,8 +67,14 @@ namespace Typerite.Models
         {
             get
             {
-                if (Description.Length > 265) { return Description.Substring(0, 265) + " ..."; }
+                if (Description != null)
+                {
+                    if (Description.Length > 265) { return Description.Substring(0, 265) + " ..."; }
+                    else { return Description; }
+                }
+
                 else { return Description; }
+
 
             }
         }
@@ -64,7 +83,11 @@ namespace Typerite.Models
         {
             get
             {
-                if (Ingredient.Length > 10) { return Ingredient.Substring(0, 10) + " ..."; }
+                if (Ingredient != null)
+                {
+                    if (Ingredient.Length > 10) { return Ingredient.Substring(0, 10) + " ..."; }
+                    else { return Ingredient; }
+                }
                 else { return Ingredient; }
 
             }
@@ -84,7 +107,11 @@ namespace Typerite.Models
         {
             get
             {
-                if (Description.Length > 10) { return Description.Substring(0, 10) + " ..."; }
+                if (Description != null)
+                {
+                    if (Description.Length > 10) { return Description.Substring(0, 10) + " ..."; }
+                    else { return Description; }
+                }
                 else { return Description; }
 
             }

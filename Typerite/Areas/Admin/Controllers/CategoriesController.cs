@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Typerite.Data;
+using Typerite.Extensions;
 using Typerite.Models;
 
 namespace Typerite.Areas.Admin.Controllers
@@ -23,31 +24,84 @@ namespace Typerite.Areas.Admin.Controllers
         // GET: Admin/Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    return View(await _context.Categories.ToListAsync());
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }     
         }
 
         // GET: Admin/Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var categories = await _context.Categories
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (categories == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(categories);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
             }
 
-            var categories = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (categories == null)
-            {
-                return NotFound();
-            }
-
-            return View(categories);
+            
         }
 
         // GET: Admin/Categories/Create
         public IActionResult Create()
         {
-            return View();
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    return View();
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         // POST: Admin/Categories/Create
@@ -57,29 +111,67 @@ namespace Typerite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Category")] Categories categories)
         {
-            if (ModelState.IsValid)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                _context.Add(categories);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(categories);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    return View(categories);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
             }
-            return View(categories);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+           
         }
 
         // GET: Admin/Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var categories = await _context.Categories.FindAsync(id);
+                    if (categories == null)
+                    {
+                        return NotFound();
+                    }
+                    return View(categories);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
             }
 
-            var categories = await _context.Categories.FindAsync(id);
-            if (categories == null)
-            {
-                return NotFound();
-            }
-            return View(categories);
+            
         }
 
         // POST: Admin/Categories/Edit/5
@@ -89,7 +181,12 @@ namespace Typerite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Category")] Categories categories)
         {
-            if (id != categories.Id)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (id != categories.Id)
             {
                 return NotFound();
             }
@@ -115,24 +212,59 @@ namespace Typerite.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(categories);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            
         }
 
         // GET: Admin/Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var categories = await _context.Categories
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (categories == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(categories);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
             }
 
-            var categories = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (categories == null)
-            {
-                return NotFound();
-            }
 
-            return View(categories);
+            
         }
 
         // POST: Admin/Categories/Delete/5
@@ -140,10 +272,30 @@ namespace Typerite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categories = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(categories);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    var categories = await _context.Categories.FindAsync(id);
+                    _context.Categories.Remove(categories);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+           
         }
 
         private bool CategoriesExists(int id)

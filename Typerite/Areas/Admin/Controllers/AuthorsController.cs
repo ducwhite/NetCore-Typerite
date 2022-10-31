@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Typerite.Data;
+using Typerite.Extensions;
 using Typerite.Models;
 
 namespace Typerite.Areas.Admin.Controllers
@@ -23,31 +24,86 @@ namespace Typerite.Areas.Admin.Controllers
         // GET: Admin/Authors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Authors.ToListAsync());
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    return View(await _context.Authors.ToListAsync());
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
         }
 
         // GET: Admin/Authors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                   
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var authors = await _context.Authors
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (authors == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(authors);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
             }
 
-            var authors = await _context.Authors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (authors == null)
-            {
-                return NotFound();
-            }
-
-            return View(authors);
+           
         }
 
         // GET: Admin/Authors/Create
         public IActionResult Create()
         {
-            return View();
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    return View();
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         // POST: Admin/Authors/Create
@@ -57,29 +113,69 @@ namespace Typerite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FullName,UserName,Password")] Authors authors)
         {
-            if (ModelState.IsValid)
+
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                _context.Add(authors);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(authors);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    return View(authors);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
             }
-            return View(authors);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            
         }
 
         // GET: Admin/Authors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var authors = await _context.Authors.FindAsync(id);
+                    if (authors == null)
+                    {
+                        return NotFound();
+                    }
+                    return View(authors);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
             }
 
-            var authors = await _context.Authors.FindAsync(id);
-            if (authors == null)
-            {
-                return NotFound();
-            }
-            return View(authors);
+
+            
         }
 
         // POST: Admin/Authors/Edit/5
@@ -89,50 +185,89 @@ namespace Typerite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,UserName,Password")] Authors authors)
         {
-            if (id != authors.Id)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
                 {
-                    _context.Update(authors);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AuthorsExists(authors.Id))
+                    if (id != authors.Id)
                     {
                         return NotFound();
                     }
-                    else
+
+                    if (ModelState.IsValid)
                     {
-                        throw;
+                        try
+                        {
+                            _context.Update(authors);
+                            await _context.SaveChangesAsync();
+                        }
+                        catch (DbUpdateConcurrencyException)
+                        {
+                            if (!AuthorsExists(authors.Id))
+                            {
+                                return NotFound();
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+                        return RedirectToAction(nameof(Index));
                     }
+                    return View(authors);
                 }
-                return RedirectToAction(nameof(Index));
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
             }
-            return View(authors);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+
+            
         }
 
         // GET: Admin/Authors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
             {
-                return NotFound();
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var authors = await _context.Authors
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (authors == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(authors);
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
             }
 
-            var authors = await _context.Authors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (authors == null)
-            {
-                return NotFound();
-            }
-
-            return View(authors);
+            
         }
 
         // POST: Admin/Authors/Delete/5
@@ -140,10 +275,29 @@ namespace Typerite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var authors = await _context.Authors.FindAsync(id);
-            _context.Authors.Remove(authors);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login") != null)
+            {
+                var login = SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login");
+                if (login.Count() > 0)
+                {
+                    var authors = await _context.Authors.FindAsync(id);
+                    _context.Authors.Remove(authors);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            
         }
 
         private bool AuthorsExists(int id)

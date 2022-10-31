@@ -23,7 +23,11 @@ namespace Typerite.Models
         {
             get
             {
-                if (Message.Length > 20) { return Message.Substring(0, 20) + " ..."; }
+                if (Message != null)
+                {
+                    if (Message.Length > 20) { return Message.Substring(0, 20) + " ..."; }
+                    else { return Message; }
+                }
                 else { return Message; }
 
             }

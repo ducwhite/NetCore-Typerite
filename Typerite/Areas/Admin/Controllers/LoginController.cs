@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Typerite.Data;
 using Typerite.Extensions;
@@ -46,5 +47,17 @@ namespace Typerite.Areas.Admin.Controllers
 
             }
         }
+
+        public IActionResult Logout()
+        {
+
+            SessionHelper.GetObjectFromJson<List<Login>>(HttpContext.Session, "Login").Clear();
+            List<Login> author = new List<Login>();
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "Login", author);
+            return RedirectToAction("Index");
+        }
+
+
+
     }
 }

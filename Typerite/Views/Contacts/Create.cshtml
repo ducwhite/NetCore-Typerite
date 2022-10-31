@@ -39,6 +39,42 @@
     <a asp-action="Index">Back to List</a>
 </div>*@
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#btnSubmit").click(function() {
+            if ($('#fullname').val() === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'The Full Name field is required!',
+                })
+            }
+            else if ($('#email').val() === "" ) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'The Email field is required!',
+                })
+            }
+            else if ($('#message').val() === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'The Message field is required!',
+                })
+            }
+            else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Done',
+                    text: 'Thank you, we have received your message!',
+                    timer: 3000
+                })
+            }
+        })
+    })
+</script>
+
 <main class="row content__page">
 
     <section class="column large-full entry format-standard">
@@ -107,21 +143,21 @@
             <fieldset>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-field">
-                    <input asp-for="FullName" id="cName" class="full-width" placeholder="Your Name" value="" type="text">
+                    <input asp-for="FullName" id="fullname" class="full-width" placeholder="Your Name" value="" type="text">
                     <span asp-validation-for="FullName" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
-                    <input asp-for="Email" id="cEmail" class="full-width" placeholder="Your Email" value="" type="text">
+                    <input asp-for="Email" id="email" class="full-width" placeholder="Your Email" value="" type="text">
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="message form-field">
-                    <textarea asp-for="Message" id="cMessage" class="full-width" placeholder="Your Message"></textarea>
+                    <textarea asp-for="Message" id="message" class="full-width" placeholder="Your Message"></textarea>
                     <span asp-validation-for="Message" class="text-danger"></span>
                 </div>
 
-                <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large full-width" value="Send Message" type="submit">
+                <input name="submit" id="btnSubmit" class="btn btn--primary btn-wide btn--large full-width" value="Send Message" type="submit">
 
             </fieldset>
         </form> <!-- end form -->
